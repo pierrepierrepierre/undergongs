@@ -644,7 +644,21 @@ textarea {
 --------------------------------------------------------------*/
 
 #page {
-	margin-top:4vh;
+	margin:4vh 1em 0;
+}
+
+@media screen and (max-width: 899px) {
+	#page {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+
+
+@media screen and (min-width: 900px) {
+
+#page {
   display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 16vh 16vh;
@@ -664,8 +678,11 @@ textarea {
 	grid-column: 1;
 }
 
+html:lang(fr-FR) .site-gongs, .entry-meta, .post-thumbnail {
+	grid-column: 2;
+}
+
 .entry-content, .archive-content, .posts-navigation {
-	text-align: justify;
 	grid-row: auto / auto;
 	height:max-content;
 }
@@ -687,13 +704,19 @@ textarea {
 	grid-row: 2 / span 12;
 }
 
+}
+
 	/* ----------------------------------------------------------
 	Site gongs
 	-------------------------------------------------------------*/
 
-
 	#page .site-branding {
 		text-align: center;
+	}
+
+	.site-gongs {
+		height: 30vh;
+		width: 30vh;
 	}
 
 	.site-logo-wrapper, .site-gongs {
@@ -707,15 +730,22 @@ textarea {
 		margin: 0 auto;
 	}
 
-	.site-gongs {
-		height: 30vh;
-		width: 30vh;
-	}
-
 	.site-gongs img {
 		max-width:75%;
 		max-height:75%;
 		width: auto;
+	}
+
+	@media screen and (max-width: 899px) {
+
+		.site-gongs {
+			display: none;
+		}
+
+		.site-gongs.site-logo-wrapper {
+			display: inline-flex;
+		}
+
 	}
 
 /*--------------------------------------------------------------
@@ -726,6 +756,21 @@ textarea {
 # Center Bar
 ----------------------------------------------------*/
 
+
+.center-bar .entry-title, .center-bar .page-title {
+	margin-bottom: 0;
+	display: block;
+	text-align: center;
+	background-color: #d3e8e1;
+	color: #d3e8e1;
+	text-shadow: 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+	text-transform: uppercase;
+	font-size: 2.5em;
+	font-weight: bold;
+}
+
+
+@media screen and (min-width: 900px) {
 
 .center-bar {
 	position: absolute;
@@ -744,16 +789,10 @@ textarea {
 
 .center-bar > .page-title, .center-bar > .entry-title {
 	word-break: break-all;
-	text-transform: uppercase;
-	font-size: 2.5em;
-	text-align: center;
-	font-weight: bold;
 	width:2em;
+	text-align: center;
 	margin: 0.67em auto;
 	padding:0.5em;
-	background-color: #d3e8e1;
-	color: #d3e8e1;
-	text-shadow: 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 
 .center-bar::before {
@@ -778,10 +817,63 @@ textarea {
 	text-decoration: underline;
 }
 
+}
+
 /* Navigation
 --------------------------------------------- */
+
+@media screen and (max-width: 899px) { /* SMALL SCREEN */
+
+	.site-gongs.site-logo-wrapper {
+		margin: 0;
+	}
+
+
+.center-bar {
+	display: inline-flex;
+	flex-direction: column-reverse;
+	height: 30vh;
+	width: 30vh;
+}
+
+.center-bar .entry-title, .center-bar .page-title {
+	margin-bottom: 0;
+	display: block;
+	text-align: center;
+	background-color: #d3e8e1;
+	color: #d3e8e1;
+	text-shadow: 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+	text-transform: uppercase;
+	font-size: 2.5em;
+	font-weight: bold;
+}
+
+
+	#site-navigation {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-content: center;
+		width: 100%;
+	}
+
+	#site-navigation .current-menu-item a {
+		/* background-color: #d3e8e1;
+		color: #d3e8e1;
+		text-shadow: 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+		text-transform: uppercase;
+		font-size: 2.5em;
+		font-weight: bold; */
+	}
+
+}
+
+
+
+@media screen and (min-width: 900px) {
+
 .center-bar > .main-navigation {
-	bottom: 25px;
+	bottom: 75px;
 	display: block;
 	width:200px;
 	position: fixed;
@@ -791,8 +883,10 @@ textarea {
 	width: auto;
 }
 
+}
+
 .main-navigation ul {
-	display: none;
+	display: flex;
 	list-style: none;
 	margin: 0;
 	padding-left: 0;
@@ -846,10 +940,11 @@ textarea {
 /* Small menu. */
 .menu-toggle,
 .main-navigation.toggled ul {
-	display: block;
+	/* display: block; */
+	display: none;
 }
 
-@media screen and (min-width: 37.5em) {
+@media screen and (min-width: 900px) {
 
 	.menu-toggle {
 		display: none;
@@ -891,6 +986,32 @@ textarea {
 	background:
 }
 
+/* Language in navigation
+-----------------------------------------------*/
+
+.sublanguage.menu-item-object-custom {
+	font-size: 0.9em;
+	text-transform: lowercase;
+  top: 3em;
+	max-height: 0;
+	overflow: visible;
+}
+
+.sublanguage > a {
+	background: #d3e8e1;
+}
+
+.sublanguage.menu-item-object-custom.active_language {
+	display: none;
+}
+
+.sublanguage.en > a::after {
+	content: " > ";
+}
+
+.sublanguage.fr > a::after {
+	content: " < ";
+}
 
 /* Posts and pages
 --------------------------------------------- */
