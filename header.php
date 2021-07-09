@@ -20,20 +20,26 @@
 	<?php wp_head(); ?>
 </head>
 
+<?php /* How many gongs do you want ? */
+
+if ( is_post_type_archive('record')){
+	$gong_nb = 1;
+} elseif ( is_singular() || is_post_type_archive('live')) {
+	$chars = get_the_content();
+	$chars = strlen($chars);
+	$gong_nb = max(3, ($chars / 600) );
+} else {
+	$gong_nb = 3;
+}
+
+?>
+
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'undergongs' ); ?></a>
 
-
-			<?php /* DISPLAY 3 GONGS */
-			if ( is_post_type_archive('record')){
-				$gong_nb = 1;
-			} else {
-				$gong_nb = 3;
-			}
-
-
+<?php
 			for ($x = 0; $x < $gong_nb; $x++) {
 				// Pick a random gong
 				$gong_model =  rand(1, 8) ;
@@ -70,13 +76,6 @@
 
 
 			<?php }  ?>
-
-<!-- NOTE TAILLES ECRANS : breakpoints
-	Mobile : moins de 768 de large
-	Small : 768×1024
-	Standard : 1024×768
-	HD : 1536×864
- -->
 
 			<?php $undergongs_description = get_bloginfo( 'description', 'display' );
 			if ( $undergongs_description || is_customize_preview() ) : ?>
