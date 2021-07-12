@@ -24,19 +24,26 @@
 
 if ( is_post_type_archive('record')){
 	$gong_nb = 1;
-} elseif ( is_singular() || is_post_type_archive('live')) {
-	$chars = get_the_content();
-	$chars = strlen($chars);
+	$class = "one-gong";
+} elseif ( is_singular() || is_post_type_archive('live')  ) {
+	$mypost = get_post(get_the_ID()); // specific post
+	$the_content = apply_filters('the_content', $mypost->post_content);
+	$chars = strlen($the_content);
 	$gong_nb = max(3, ($chars / 600) );
+	if ( $gong_nb > 3) {
+		$class = "many-gongs";
+	} else {
+		$class = "three-gongs";
+	}
 } else {
 	$gong_nb = 3;
+	$class = "three-gongs";
 }
 
 ?>
-
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<div id="page" class="site">
+<div id="page" class="site <?php echo $class; ?>">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'undergongs' ); ?></a>
 
 <?php
@@ -85,8 +92,8 @@ if ( is_post_type_archive('record')){
 			<?php endif; ?>
 
 <div class="center-bar">
-	<?php if (is_front_page()) { ?>
-		<h1 class="entry-title"></h1>
+	<?php if (is_front_page()) {
+		?>
 	<?php } elseif (is_singular()) {
 		the_title( '<h1 class="entry-title">', '</h1>' );
 	} elseif (is_archive()) {

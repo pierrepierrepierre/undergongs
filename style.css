@@ -664,6 +664,9 @@ textarea {
 	grid-template-rows: 16vh 16vh;
 	grid-column-gap: 200px;
 	grid-auto-flow: column;
+}
+
+#page.many-gongs {
 	grid-auto-rows: 16vh;
 }
 

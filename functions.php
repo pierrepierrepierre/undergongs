@@ -210,9 +210,14 @@ add_filter('get_the_archive_title', function ($title) {
 add_filter( 'pre_get_posts', 'modify_my_query' );
 
 function modify_my_query( $wp_query ) {
-	if (!is_post_type_archive()) return;
+	if ( is_admin() || !is_post_type_archive()) return;
+
     if( $wp_query->query_vars['post_type'] == 'live' ){
-			$wp_query->query_vars['posts_per_page'] = 1;
+			if ( is_paged()) {
+				$wp_query->query_vars['posts_per_page'] = -1;
+			} else {
+				$wp_query->query_vars['posts_per_page'] = 1;
+			}
 		} elseif ($wp_query->query_vars['post_type'] == 'record' ) {
 			$wp_query->query_vars['posts_per_page'] = -1;
 		} else {
@@ -221,38 +226,52 @@ function modify_my_query( $wp_query ) {
 
 }
 
-//
-// /**
-//  * Get information about available image sizes
-//  */
-// function get_image_sizes( $size = '' ) {
-//     $wp_additional_image_sizes = wp_get_additional_image_sizes();
-//
-//     $sizes = array();
-//     $get_intermediate_image_sizes = get_intermediate_image_sizes();
-//
-//     // Create the full array with sizes and crop info
-//     foreach( $get_intermediate_image_sizes as $_size ) {
-//         if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
-//             $sizes[ $_size ]['width'] = get_option( $_size . '_size_w' );
-//             $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
-//             $sizes[ $_size ]['crop'] = (bool) get_option( $_size . '_crop' );
-//         } elseif ( isset( $wp_additional_image_sizes[ $_size ] ) ) {
-//             $sizes[ $_size ] = array(
-//                 'width' => $wp_additional_image_sizes[ $_size ]['width'],
-//                 'height' => $wp_additional_image_sizes[ $_size ]['height'],
-//                 'crop' =>  $wp_additional_image_sizes[ $_size ]['crop']
-//             );
-//         }
-//     }
-//
-//     // Get only 1 size if found
-//     if ( $size ) {
-//         if( isset( $sizes[ $size ] ) ) {
-//             return $sizes[ $size ];
-//         } else {
-//             return false;
-//         }
-//     }
-//     return $sizes;
-// }
+/* RECORD CUSTOM FIELD */
+
+
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_60d6eab9837ab',
+	'title' => 'Record details',
+	'fields' => array(
+		array(
+			'key' => 'field_60d6eb7548710',
+			'label' => 'Record details',
+			'name' => 'record_details',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 1,
+			'delay' => 0,
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'record',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;
